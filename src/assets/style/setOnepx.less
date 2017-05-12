@@ -49,3 +49,26 @@
     transform-origin: 100% 0;
     transform: scaleX(0.5);
 }
+.setAllLine(@c: #E6E6E6, @radius: 0) {
+    border: 1px solid @c;
+    border-radius: @radius;
+    @media screen and (-webkit-min-device-pixel-ratio: 2) {
+      position: relative;
+      border: 0;
+      &::before{
+        content: "";
+        width: 200%;
+        height: 200%;
+        position: absolute;
+        top: 0;
+        left: 0;
+        border: 1px solid @c;
+        -webkit-transform: scale(0.5);
+        -webkit-transform-origin: 0 0;
+        padding: 1px;
+        -webkit-box-sizing: border-box;
+        border-radius: @radius*2;
+        pointer-events: none;
+      }
+    }
+}

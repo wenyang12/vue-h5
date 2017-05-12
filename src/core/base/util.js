@@ -1,4 +1,5 @@
 import device from '@/core/base/device'
+import escape from 'escape-html'
 
 export default {
   device,
@@ -70,5 +71,11 @@ export default {
    */
   dealNumToThousand (num) {
     return Number(num).toString().replace(/\d{1,3}(?=(\d{3})+(\.\d*)?$)/g, '$&,')
+  },
+  /**
+   * html字符串转义
+   */
+  escapeHtml (str) {
+    return escape(str)
   }
 }
