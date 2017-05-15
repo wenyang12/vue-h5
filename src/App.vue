@@ -11,12 +11,13 @@
       </div>
       <textarea class="input-textarea" placeholder="填写其他原因..." :value="otherReason" @input="validate" data-maxlength="200"></textarea>
     </div>
-    <div class="footer" @click.stop.prevent="submit">确认</div>
+    <div class="footer" ref="footer" @click.stop.prevent="submit">确认</div>
   </div>
 </template>
 
 <script>
 import Loading from '@/components/base/loading'
+import Success from '@/components/base/Success'
 import util from '@/core/base/util'
 import Api from '@/core/service/service'
 
@@ -72,7 +73,9 @@ export default {
     },
     ajustHeight () {
       if (!util.device.pc) {
-        FSMailBridge && FSMailBridge.handle('setWebContentHeight', document.documentElement.scrollHeight + '')
+        let height = this.$refs.footer.getBoundingClientRect().bottom
+        console.log('ajustHeight:' + height)
+        FSMailBridge && FSMailBridge.handle('setWebContentHeight', Math.ceil(height) + '')
       }
     },
     closeWindow () {
@@ -103,7 +106,11 @@ export default {
         always: () => { this.closeLoading(false) }
       }).then(res => {
         if (res.errorCode === 0) {
-          this.closeWindow()
+          Success.open('提交成功')
+          setTimeout(() => {
+            Success.close()
+            this.closeWindow()
+          }, 1000)
         } else {
           alert(res.errorMessage)
         }
@@ -122,11 +129,6 @@ export default {
 @header-height: 3.2rem;
 @footer-height: 2rem;
 
-.header,.footer{
-  position: fixed;
-  left: 0;
-  right: 0;
-}
 .header{
   position: relative;
   top: 0;
@@ -166,7 +168,7 @@ export default {
   color: #BFBFBF;
 }
 .footer{
-  bottom: 0;
+  position: relative;
   height: @footer-height;
   line-height: @footer-height;
   font-size: 0.68rem;
@@ -181,15 +183,10 @@ export default {
   }
 }
 .container{
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  margin: @header-height 1.12rem @footer-height;
-  padding: 1.22rem 0 1.2rem;
+  padding: 1.22rem 1.12rem 1.2rem;
 }
 .input-textarea{
+  position: relative;
   width: 100%;
   height: 3.2rem;
   padding: 0.34rem 0.64rem 0.34rem 0.64rem;
