@@ -9,9 +9,11 @@
       <div class="select-area">
         <span class="select-option" v-for="(option, index) in selectOptions" :class="{ active: option.isActive, inactive: !option.isActive }" @click.stop.prevent="toggleSelect(index)">{{option.value}}</span>
       </div>
-      <textarea class="input-textarea" placeholder="填写其他原因..." :value="otherReason" @input="validate" data-maxlength="200"></textarea>
+      <div class="input-textarea-wrapper">
+        <textarea class="input-textarea" placeholder="填写其他原因..." :value="otherReason" @input="validate" data-maxlength="200"></textarea>
+      </div>
     </div>
-    <div class="footer" ref="footer" @click.stop.prevent="submit">确认</div>
+    <div class="footer" :class="{disabled: !hasSelect}" ref="footer" @click.stop.prevent="submit">确&nbsp;认</div>
   </div>
 </template>
 
@@ -37,6 +39,11 @@ export default {
         isActive: false
       }],
       otherReason: ''
+    }
+  },
+  computed: {
+    hasSelect () {
+      return this.selectOptions.some(element => element.isActive) || this.otherReason.trim()
     }
   },
   methods: {
@@ -91,7 +98,8 @@ export default {
         FSMailBridge && FSMailBridge.handle('closeDialog', null)
       }
     },
-    submit () {
+    submit ($event) {
+      if ($event.target.classList.contains('disabled')) return
       let selectOptions = []
       this.selectOptions.forEach((item) => {
         if (item.isActive) selectOptions.push(item.value)
@@ -133,8 +141,8 @@ export default {
   position: relative;
   top: 0;
   height: @header-height;
-  background: url(@img-logo) no-repeat center;
-  background-size: 100% 100%;
+  background: #f8f8f8 url(@img-logo) no-repeat center;
+  background-size: auto 100%;
   text-align: center;
   &:after{
     content: " ";
@@ -175,8 +183,11 @@ export default {
   color: #333333;
   text-align: center;
   cursor: pointer;
-  &:active {
+  &:active{
     background: #F8F8F8;
+  }
+  &.disabled{
+    color: #cccccc;
   }
   &:after{
     .setTopLine(#E4E6EB);
@@ -185,14 +196,18 @@ export default {
 .container{
   padding: 1.22rem 1.12rem 1.2rem;
 }
+.input-textarea-wrapper{
+  height: 3.84rem;
+  overflow: hidden;
+  .setAllLine(#E6E6E6, 0.8rem);
+}
 .input-textarea{
-  position: relative;
+  padding: 0.38rem 0.64rem 0.38rem 0.64rem;
   width: 100%;
-  height: 3.2rem;
-  padding: 0.34rem 0.64rem 0.34rem 0.64rem;
+  height: 100%;
+  border: none;
   background: #F8F8F8;
   .placeholder(#cccccc);
-  .setAllLine(#E6E6E6, 0.8rem);
 }
 .select-area{
   display: flex;
@@ -202,7 +217,7 @@ export default {
   position: relative;
   display: inline-block;
   margin: 0 0.64rem 0.64rem 0;
-  padding: 0.34rem 0.64rem 0.42rem 0.64rem;
+  padding: 0.38rem 0.64rem 0.38rem 0.64rem;
   font-size: 0.56rem;
   height: 1.6rem; // 上下padding加上font-size*line-height计算出来的，是为了border-box
   box-sizing: border-box;
@@ -213,7 +228,7 @@ export default {
     }
     background: linear-gradient(to right, #ffb83c 0%, #ff9b2c 100%);
     color: #FFFFFF;
-    box-shadow: 0 10px 0 -5px rgba(255, 142, 43, 0.2);
+    box-shadow: 0 8px 5px -5px rgba(255, 142, 43, 0.2);
   }
   &.inactive{
     background: #FFFFFF;
