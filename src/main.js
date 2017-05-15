@@ -12,6 +12,7 @@ if (process.env.NODE_ENV === 'development') {
   date.toGMTString()
   document.cookie = `fs_token=${Token.fsToken};path=/;expires=${date}`
   document.cookie = `FSAuthX=${Token.FSAuthX};path=/;expires=${date}`
+  document.cookie = `FSAuthXC=${Token.FSAuthXC};path=/;expires=${date}`
 }
 
 /* eslint-disable no-extend-native */

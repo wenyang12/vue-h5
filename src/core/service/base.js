@@ -9,6 +9,7 @@ import _ from 'lodash'
  *  url: string 接口地址
  *  data: object 请求数据
  *  always: function 请求完成后执行, 无论成功还是失败
+ *  resPreproccess: boolean 是否对response进行内置的预处理 默认值true
  *  errAlert: number 是否提示错误信息, 0: 表示不提示 1: 表示提示. 默认值1
  * @param {*} output 用作传递输出参数
  *  req: superagent对象
@@ -25,6 +26,9 @@ export default {
       .query({ _fs_token: Cookies.get('fs_token') })
       .send(option.data)
       .then(res => {
+        if (option.resPreproccess === false) {
+          return res.body
+        }
         if (res.body.Result.StatusCode === 0) {
           let value = res.body.Value
           if (value.errorCode === 0) {

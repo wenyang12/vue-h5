@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="header">
-      <span class="close"></span>
+      <span class="close" @click.stop.prevent="closeWindow"></span>
       <p class="title">选择解绑邮箱的原因</p>
       <p class="sub-title">我们将继续改进</p>
     </div>
@@ -9,7 +9,7 @@
       <div class="select-area">
         <span class="select-option" v-for="(option, index) in selectOptions" :class="{ active: option.isActive, inactive: !option.isActive }" @click.stop.prevent="toggleSelect(index)">{{option.value}}</span>
       </div>
-      <textarea class="input-textarea" placeholder="填写其他原因..." v-model.trim="otherReason" @input="validate" data-maxlength="200"></textarea>
+      <textarea class="input-textarea" placeholder="填写其他原因..." :value="otherReason" @input="validate" data-maxlength="200"></textarea>
     </div>
     <div class="footer" @click.stop.prevent="submit">确认</div>
   </div>
@@ -18,6 +18,7 @@
 <script>
 import Loading from '@/components/base/loading'
 import util from '@/core/base/util'
+import Api from '@/core/service/service'
 
 export default {
   name: 'app',
@@ -38,15 +39,15 @@ export default {
     }
   },
   methods: {
-    showLoading (useJsapi = true) {
+    showLoading (useJsapi = true, showText = '加载中...') {
       if (this.loadingTimer) return
       this.loadingTimer = setTimeout(() => {
         if (this.isJsapiReady && useJsapi) {
           FSOpen.widget.showPreloader({
-            text: '加载中...'
+            text: showText
           })
         } else {
-          Loading.open('加载中...')
+          Loading.open(showText)
         }
       }, window.$showLoadingDelay)
     },
@@ -67,8 +68,24 @@ export default {
     validate ($event) {
       let value = $event.target.value
       let maxLength = Number($event.target.getAttribute('data-maxlength'))
-      if (value.length > maxLength) {
-        $event.target.value = value.substr(0, maxLength)
+      this.otherReason = $event.target.value = value.substr(0, maxLength)
+    },
+    ajustHeight () {
+      if (!util.device.pc) {
+        FSMailBridge && FSMailBridge.handle('setWebContentHeight', document.documentElement.scrollHeight + '')
+      }
+    },
+    closeWindow () {
+      if (util.device.pc) {
+        try {
+          if (parent) {
+            parent.FS.emailOption.hide()
+          }
+        } catch (err) {
+          console.log('closeWindow: ' + err)
+        }
+      } else {
+        FSMailBridge && FSMailBridge.handle('closeDialog', null)
       }
     },
     submit () {
@@ -78,12 +95,23 @@ export default {
       })
       let submitData = {
         reason: selectOptions.join('#'),
-        other: util.escapeHtml(this.otherReason)
+        other: util.escapeHtml(this.otherReason.trim())
       }
-      alert(JSON.stringify(submitData))
+      this.showLoading(false, '提交中...')
+      Api.unbindExam({
+        data: submitData,
+        always: () => { this.closeLoading(false) }
+      }).then(res => {
+        if (res.errorCode === 0) {
+          this.closeWindow()
+        } else {
+          alert(res.errorMessage)
+        }
+      })
     }
   },
   mounted () {
+    this.ajustHeight()
   }
 }
 </script>
@@ -126,6 +154,7 @@ export default {
   .square(0.906rem);
   background: url(@img-close) no-repeat center;
   background-size: 60%;
+  cursor: pointer;
 }
 .title{
   padding-top: 0.65rem;
@@ -143,6 +172,10 @@ export default {
   font-size: 0.68rem;
   color: #333333;
   text-align: center;
+  cursor: pointer;
+  &:active {
+    background: #F8F8F8;
+  }
   &:after{
     .setTopLine(#E4E6EB);
   }
@@ -174,6 +207,8 @@ export default {
   margin: 0 0.64rem 0.64rem 0;
   padding: 0.34rem 0.64rem 0.42rem 0.64rem;
   font-size: 0.56rem;
+  height: 1.6rem; // 上下padding加上font-size*line-height计算出来的，是为了border-box
+  box-sizing: border-box;
   &.active{
     border-radius: 2rem;
     @media screen and (-webkit-min-device-pixel-ratio: 2) {

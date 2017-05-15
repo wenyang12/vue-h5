@@ -10,7 +10,8 @@ module.exports = {
     browser: true,
   },
   globals: {
-    "FSOpen": true
+    "FSOpen": true,
+    "FSMailBridge": true
   },
   // https://github.com/feross/standard/blob/master/RULES.md#javascript-standard-style
   extends: 'standard',

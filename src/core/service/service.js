@@ -9,4 +9,12 @@ import apiList from '@/data/apilist'
 let result = {}
 baseApi.registe(result, ...apiList) // 使用baseApi.registe方法定义接口
 
+result.unbindExam = function (opt, curOpt) {
+  return baseApi.ajax(Object.assign(opt, {
+    urlPrefix: 'open/emailproxy/web/email/',
+    url: 'unbindExam',
+    resPreproccess: false
+  }), {})
+}
+
 export default result

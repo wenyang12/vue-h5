@@ -48,8 +48,8 @@ module.exports = {
     assetsSubDirectory: 'static',
     assetsPublicPath: '/',
     proxyTable: {
-      '/FHH/EM1APAY': {
-        target: 'http://10.113.32.21:8008',
+      '/open/emailproxy': {
+        target: 'http://10.113.32.48:8004',
         changeOrigin: true
       }
     },
