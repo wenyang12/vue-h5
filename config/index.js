@@ -13,7 +13,7 @@ var BUILD = 'dist';
 var APP = 'email-questionnaire';
 var assetsPublicPath = '';
 if(buildEnv === 'www'){
-  assetsPublicPath = `//www.${SITE[buildEnv]}/open/fe-pay/${APP}/${BUILD}/`
+  assetsPublicPath = `//www.${SITE[buildEnv]}/open/email/${APP}/${BUILD}/`
 }else{
   assetsPublicPath = `//${buildEnv}.fspage.com/h5/${APP}/${BUILD}/`
 }
