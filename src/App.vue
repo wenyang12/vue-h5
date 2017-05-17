@@ -134,8 +134,8 @@ export default {
 <style lang="less">
 @import '~@/assets/style/all';
 
-@header-height: 3.2rem;
-@footer-height: 2rem;
+@header-height: 3.75rem;
+@footer-height: 2.344rem;
 
 .header{
   position: relative;
@@ -159,27 +159,27 @@ export default {
 }
 .close{
   position: absolute;
-  top: 0.208rem;
-  right: 0.266rem;
-  .square(0.906rem);
+  top: 0.243rem;
+  right: 0.314rem;
+  .square(1.06rem);
   background: url(@img-close) no-repeat center;
   background-size: 60%;
   cursor: pointer;
 }
 .title{
-  padding-top: 0.65rem;
-  font-size: 0.8rem;
+  padding-top: 0.76rem;
+  font-size: 0.9376rem;
   color: #333333;
 }
 .sub-title{
-  font-size: 0.52rem;
+  font-size: 0.6094rem;
   color: #BFBFBF;
 }
 .footer{
   position: relative;
   height: @footer-height;
   line-height: @footer-height;
-  font-size: 0.68rem;
+  font-size: 0.7968rem;
   color: #333333;
   text-align: center;
   cursor: pointer;
@@ -194,15 +194,15 @@ export default {
   }
 }
 .container{
-  padding: 1.22rem 1.12rem 1.2rem;
+  padding: 1.43rem 1.312rem 1.406rem;
 }
 .input-textarea-wrapper{
-  height: 3.84rem;
+  height: 4.5rem;
   overflow: hidden;
-  .setAllLine(#E6E6E6, 0.8rem);
+  .setAllLine(#E6E6E6, 0.9375rem);
 }
 .input-textarea{
-  padding: 0.38rem 0.64rem 0.38rem 0.64rem;
+  padding: 0.445rem 0.75rem 0.445rem 0.75rem;
   width: 100%;
   height: 100%;
   border: none;
@@ -216,15 +216,16 @@ export default {
 .select-option{
   position: relative;
   display: inline-block;
-  margin: 0 0.64rem 0.64rem 0;
-  padding: 0.38rem 0.64rem 0.38rem 0.64rem;
-  font-size: 0.56rem;
-  height: 1.6rem; // 上下padding加上font-size*line-height计算出来的，是为了border-box
+  margin: 0 0.75rem 0.75rem 0;
+  padding: 0.445rem 0.75rem 0.445rem 0.75rem;
+  font-size: 0.656rem;
+  height: 1.874rem; // 上下padding加上font-size*line-height计算出来的，是为了border-box
   box-sizing: border-box;
+  cursor: pointer;
   &.active{
-    border-radius: 2rem;
+    border-radius: 2.342rem;
     @media screen and (-webkit-min-device-pixel-ratio: 2) {
-      border-radius: 4rem;
+      border-radius: 4.684rem;
     }
     background: linear-gradient(to right, #ffb83c 0%, #ff9b2c 100%);
     color: #FFFFFF;
@@ -233,7 +234,7 @@ export default {
   &.inactive{
     background: #FFFFFF;
     color: #333333;
-    .setAllLine(#E6E6E6, 2rem);
+    .setAllLine(#E6E6E6, 2.342rem);
   }
 }
 </style>
