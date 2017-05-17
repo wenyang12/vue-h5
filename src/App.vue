@@ -13,7 +13,7 @@
         <textarea class="input-textarea" placeholder="填写其他原因..." :value="otherReason" @input="validate" data-maxlength="200"></textarea>
       </div>
     </div>
-    <div class="footer" :class="{disabled: !hasSelect}" ref="footer" @click.stop.prevent="submit">确&nbsp;认</div>
+    <div class="footer" :class="{disabled: !hasSelect}" ref="footer" @click.stop.prevent="submit">提&nbsp;交</div>
   </div>
 </template>
 
