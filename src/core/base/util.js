@@ -77,5 +77,17 @@ export default {
    */
   escapeHtml (str) {
     return escape(str)
+  },
+
+  /**
+   * 将两个有css长度单位的字符串相加
+   * @param {*} p1
+   * @param {*} p2
+   */
+  addUnit (p1, p2) {
+    let cp1 = parseFloat(p1)
+    let cp2 = parseFloat(p2)
+    let unit = p1.replace(cp1 + '', '')
+    return cp1 + cp2 + unit
   }
 }

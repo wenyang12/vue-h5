@@ -5,7 +5,7 @@
       <p class="title">选择解绑邮箱的原因</p>
       <p class="sub-title">我们将继续改进</p>
     </div>
-    <div class="container">
+    <div class="container" ref="container">
       <div class="select-area">
         <span class="select-option" v-for="(option, index) in selectOptions" :class="{ active: option.isActive, inactive: !option.isActive }" @click.stop.prevent="toggleSelect(index)">{{option.value}}</span>
       </div>
@@ -79,10 +79,20 @@ export default {
       this.otherReason = $event.target.value = value.substr(0, maxLength)
     },
     ajustHeight () {
-      if (!util.device.pc) {
+      if (util.device.android) {
         let height = this.$refs.footer.getBoundingClientRect().bottom
         console.log('ajustHeight:' + height)
         FSMailBridge && FSMailBridge.handle('setWebContentHeight', Math.ceil(height) + '')
+      } else if (util.device.ios) {
+        let height = this.$refs.footer.getBoundingClientRect().bottom
+        let viewHeight = document.documentElement.clientHeight
+        let gap = viewHeight - height
+        if (gap > 0) {
+          let computedStyle = getComputedStyle(this.$refs.container)
+          let cssStyle = this.$refs.container.style
+          cssStyle.paddingTop = util.addUnit(computedStyle.getPropertyValue('padding-top'), gap / 2 + 'px')
+          cssStyle.paddingBottom = util.addUnit(computedStyle.getPropertyValue('padding-bottom'), gap / 2 + 'px')
+        }
       }
     },
     closeWindow () {
