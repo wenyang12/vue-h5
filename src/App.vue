@@ -10,7 +10,7 @@
         <span class="select-option" v-for="(option, index) in selectOptions" :class="{ active: option.isActive, inactive: !option.isActive }" @click.stop.prevent="toggleSelect(index)">{{option.value}}</span>
       </div>
       <div class="input-textarea-wrapper">
-        <textarea class="input-textarea" placeholder="填写其他原因..." :value="otherReason" @input="validate" data-maxlength="200"></textarea>
+        <textarea class="input-textarea" placeholder="填写其他原因..." :value="otherReason" @focus="scrollBottom" @input="validate" data-maxlength="200"></textarea>
       </div>
     </div>
     <div class="footer" :class="{disabled: !hasSelect}" ref="footer" @click.stop.prevent="submit">提&nbsp;交</div>
@@ -77,6 +77,11 @@ export default {
       let value = $event.target.value
       let maxLength = Number($event.target.getAttribute('data-maxlength'))
       this.otherReason = $event.target.value = value.substr(0, maxLength)
+    },
+    scrollBottom () {
+      let h = document.documentElement.scrollHeight - document.documentElement.clientHeight
+      console.log('scrollTop:' + h)
+      if (h > 0) document.body.scrollTop = h
     },
     ajustHeight () {
       if (util.device.android) {
