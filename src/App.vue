@@ -19,7 +19,7 @@
 
 <script>
 import Loading from '@/components/base/loading'
-import Success from '@/components/base/Success'
+import Success from '@/components/base/success'
 import util from '@/core/base/util'
 import Api from '@/core/service/service'
 
