@@ -5,9 +5,7 @@ var path = require('path')
 var buildEnvArg = process.argv.find((arg) => arg.indexOf('--env') >= 0);
 var buildEnv = buildEnvArg ? buildEnvArg.split('=')[1] : '';
 var SITE = {
-  'www': 'fxiaoke.com',
-  'ceshi112': 'ceshi112.com',
-  'ceshi113': 'ceshi113.com'
+  'www': 'fxiaoke.com'
 }
 var BUILD = 'dist';
 var APP = 'email-questionnaire';
